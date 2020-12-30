@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:GettingStarted"
+             xmlns:sfChat="clr-namespace:Syncfusion.XForms.Chat;assembly=Syncfusion.SfChat.XForms"
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             mc:Ignorable="d"
+             x:Class="GettingStarted.CustomMessageInputView">
+    
+    <ContentPage.BindingContext>
+        <local:ViewModel x:Name="viewModel" />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- Customizing Message input view and used chat editor view  -->
+            <Style TargetType="sfChat:MessageInputView">
+                <Setter Property="ControlTemplate">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <border:SfBorder x:Name="typingAreaView" BackgroundColor="#FFFFFF" CornerRadius="18" Padding="18,0,0,0" BindingContext="{TemplateBinding BindingContext}">
+                                <Grid x:Name="typingAreaGrid" ColumnSpacing="0" BackgroundColor="#FFFFFF">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="56"/>
+                                        <ColumnDefinition Width="56"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Image x:Name="attachmentView" HeightRequest="40" Source="AttachmentIcon.png" Grid.Row="0" Grid.Column="0"/>
+
+                                    <Image x:Name="sendMessageView" HeightRequest="40" Source="SendIcon.png" Grid.Row="0" Grid.Column="1">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="SendButton_Tapped"/>
+                                        </Image.GestureRecognizers>
+                                    </Image>
+
+                                    <Grid Grid.Row="0" Grid.Column="2">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <sfChat:ChatEditorView x:Name="chatEditor"  >
+
+                                            <sfChat:ChatEditorView.Margin>
+                                                <OnPlatform x:TypeArguments="Thickness">
+                                                    <On Platform="Android" Value="0,11,0,0" />
+                                                    <On Platform="UWP" Value="0,11,0,0" />
+                                                    <On Platform="iOS" Value="0,5.5,0,5.5" />
+                                                </OnPlatform>
+                                            </sfChat:ChatEditorView.Margin>
+                                        </sfChat:ChatEditorView>
+                                    </Grid>
+                                </Grid>
+                            </border:SfBorder>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+
+        <Grid x:Name="chatGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <sfChat:SfChat x:Name="sfChat" 
+                           Grid.Row="0"
+                           AllowMultilineInput="True"
+                           Messages="{Binding  Messages}"
+                           ShowIncomingMessageAuthorName="True"
+                           ShowOutgoingMessageAuthorName="True"
+                           CurrentUser="{Binding CurrentUser}" >
+            </sfChat:SfChat>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
